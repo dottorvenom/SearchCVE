@@ -6,7 +6,7 @@ import os
 from telethon import TelegramClient
 
 api_id = 1234
-api_hash = "xxxxxxxxxxxxx"
+api_hash = "xxxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 channel = "cve_mitre_org"
 DB = "cve_database.db"
@@ -174,7 +174,7 @@ async def update_db():
         conn.close()
 
 
-def query_db(os=None, access=None, cve=None, system=None, year=None):
+def query_db(os=None, access=None, cve=None, system=None, year=None, html=False):
 
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
@@ -204,6 +204,53 @@ def query_db(os=None, access=None, cve=None, system=None, year=None):
     
     rows = cur.execute(query, params).fetchall()
 
+
+    if html:
+
+        filename = "cve_results.html"
+
+        with open(filename, "w", encoding="utf-8") as f:
+
+            f.write("<html><head><title>CVE Search Results</title>")
+            f.write("<style>")
+            f.write("body{font-family:Arial;background:#111;color:#eee}")
+            f.write("a{color:#4da6ff}")
+            f.write("li{margin-bottom:15px}")
+            f.write("</style>")
+            f.write("</head><body>")
+
+            f.write("<h1>CVE Search Results</h1>")
+            f.write("<ul>")
+
+            for row in rows:
+
+                cve = row[0]
+                system = row[1]
+                os_type = row[2]
+                access = row[3]
+                vuldb = row[4]
+                msg_id = row[5]
+                link = row[6]
+
+                f.write("<li>")
+                f.write(f"<b>{cve}</b><br>")
+                f.write(f"System: {system}<br>")
+                f.write(f"OS: {os_type}<br>")
+                f.write(f"Access: {access}<br>")
+
+                if vuldb:
+                    f.write(f'VulDB: <a href="{vuldb}" target="_blank">{vuldb}</a><br>')
+
+                f.write(f'Telegram: <a href="{link}" target="_blank">{link}</a>')
+                f.write("</li>")
+
+            f.write("</ul>")
+            f.write("</body></html>")
+
+        print(f"\nHTML report saved to {filename}")
+
+        return
+    
     for row in rows:
 
         print("\nCVE:", row[0])
@@ -242,6 +289,10 @@ def main():
                     
     parser.add_argument("--year",
                     help="filter CVE by year (example: 2026)")
+
+    parser.add_argument("--html",
+                    action="store_true",
+                    help="export results to HTML file")
                     
     args = parser.parse_args()
 
@@ -272,7 +323,7 @@ def main():
 
     else:
 
-        query_db(args.os, args.access, args.cve, args.system, args.year)
+        query_db(args.os, args.access, args.cve, args.system, args.year, args.html)
 
 
 if __name__ == "__main__":
