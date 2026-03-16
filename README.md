@@ -1,5 +1,5 @@
 # SearchCVE
-A powerful searchsploit successor, supercharged with full MITRE coverage. Created by pentesters, for pentesters.
+A powerful searchsploit successor :) supercharged with full MITRE coverage. Created by pentesters, for pentesters.
 
 
 ### Description
