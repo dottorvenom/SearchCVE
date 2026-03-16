@@ -6,7 +6,7 @@ import os
 from telethon import TelegramClient
 
 api_id = 1234
-api_hash = "xxxxxxxxxxxx"
+api_hash = "xxxxxxxxxxxxx"
 
 channel = "cve_mitre_org"
 DB = "cve_database.db"
@@ -174,7 +174,7 @@ async def update_db():
         conn.close()
 
 
-def query_db(os=None, access=None, cve=None, system=None):
+def query_db(os=None, access=None, cve=None, system=None, year=None):
 
     conn = sqlite3.connect(DB)
     cur = conn.cursor()
@@ -197,6 +197,10 @@ def query_db(os=None, access=None, cve=None, system=None):
     if system:
         query += " AND system LIKE ?"
         params.append(f"%{system}%")
+    
+    if year:
+        query += " AND cve LIKE ?"
+        params.append(f"CVE-{year}-%")
     
     rows = cur.execute(query, params).fetchall()
 
@@ -236,6 +240,9 @@ def main():
     parser.add_argument("--system",
                     help="Search a system")
                     
+    parser.add_argument("--year",
+                    help="filter CVE by year (example: 2026)")
+                    
     args = parser.parse_args()
 
     init_db()
@@ -265,7 +272,7 @@ def main():
 
     else:
 
-        query_db(args.os, args.access, args.cve, args.system)
+        query_db(args.os, args.access, args.cve, args.system, args.year)
 
 
 if __name__ == "__main__":

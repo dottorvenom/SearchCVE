@@ -15,7 +15,7 @@ Automated tool for scraping and cataloging CVE (Common Vulnerabilities and Expos
   - Access Type (Remote/Local/Unknown)
   - Affected System/Product
 - **VulDB integration** - extracts VulDB links when available
-- **Advanced search** by CVE, OS, access type, or product
+- **Advanced search** by CVE, OS, Year, access type, or product
 
 ![SearchCVE](img/1.jpg)
 
