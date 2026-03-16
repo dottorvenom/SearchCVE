@@ -1,5 +1,5 @@
 # SearchCVE
-A powerful searchsploit successor, supercharged with full MITRE coverage. Created by pentesters, for pentesters.
+A powerful searchsploit successor :) supercharged with full MITRE coverage. Created by pentesters, for pentesters.
 
 
 ### Description
@@ -65,7 +65,7 @@ This will:
 - Extract and classify CVEs
 - Store them in the database
 
-**Note:** First run requires Telegram authentication (you'll receive a code via Telegram)
+**Note:** First run requires Telegram authentication (you'll receive a code via Telegram / Ex. telephone number format: +39 xxx xxxxxxx)
 
 ![SearchCVE](img/2.JPG)
 
